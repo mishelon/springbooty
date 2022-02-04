@@ -1,0 +1,20 @@
+version: "3.3"
+networks:
+  dev-net:
+services:
+  oracle-db:
+   image: oracleinanutshell/oracle-xe-11g:latest
+   container_name: oracle-xe
+   environment:
+    ORACLE_ALLOW_REMOTE: "true"
+   ports:
+    - 1521:1521
+    - 5500:5500
+    - 8080:8080
+   volumes:
+    - "./oracle-db/scripts:/docker-entrypoint-initdb.d/"
+   networks:
+    dev-net:
+     aliases:
+      - local.oracle
+
