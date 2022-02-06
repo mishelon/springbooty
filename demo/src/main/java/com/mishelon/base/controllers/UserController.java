@@ -35,7 +35,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
     description = "Endpoint for users operations",
     contact = @Contact(name = "mishelon@gmail.com", email = "mishelon@gmail.com")))
 public class UserController {
-  private static Logger LOG = LogManager.getLogger(UserController.class);
+  private static final Logger LOG = LogManager.getLogger(UserController.class);
 
   @Autowired
   private UserService userSvc;
@@ -64,13 +64,13 @@ public class UserController {
     try {
       UserDTO userDTO = userSvc.findById(id);
       if (userDTO != null) {
-        res = new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
+        res = new ResponseEntity<>(userDTO, HttpStatus.OK);
       } else {
         LOG.info("No se encontró usuario id {}", id);
-        res = new ResponseEntity<UserDTO>(HttpStatus.NOT_FOUND);
+        res = new ResponseEntity<>(HttpStatus.NOT_FOUND);
       }
     } catch (Exception e) {
-      res = new ResponseEntity<UserDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+      res = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
     return res;
   }
