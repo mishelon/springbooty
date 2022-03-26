@@ -1,15 +1,16 @@
 package com.mishelon.base.controllers;
 
-import javax.validation.Valid;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.mishelon.base.dto.UserDTO;
@@ -38,6 +39,9 @@ public class UserController {
   private static final Logger LOG = LogManager.getLogger(UserController.class);
 
   @Autowired
+  private MessageSource msg;
+
+  @Autowired
   private UserService userSvc;
 
   @GetMapping("/failer/{id}")
@@ -61,7 +65,10 @@ public class UserController {
                   schema = @Schema(implementation = UserDTO.class)))})
   public ResponseEntity<UserDTO> findByID(@PathVariable String id) {
     ResponseEntity<UserDTO> res;
+
     try {
+      msg.getMessage("saludo", null, LocaleContextHolder.getLocale());
+
       UserDTO userDTO = userSvc.findById(id);
       if (userDTO != null) {
         res = new ResponseEntity<>(userDTO, HttpStatus.OK);
@@ -76,14 +83,13 @@ public class UserController {
   }
 
   @SuppressWarnings("rawtypes")
-  @PostMapping("/user/update")
-
-  public ResponseEntity update(@Valid @RequestBody UserDTO user) {
+  @PutMapping("/user/update")
+  public ResponseEntity update(@RequestBody UserDTO user) {
     ResponseEntity res;
     try {
       UserDTO userDTO = userSvc.update(user);
       if (userDTO != null) {
-        res = ResponseEntity.status(HttpStatus.CREATED).body(userDTO);
+        res = ResponseEntity.status(HttpStatus.OK).body(userDTO);
       } else {
         LOG.info("No se encontró usuario para actualizar id {}", user.getId());
         res = ResponseEntity.status(HttpStatus.NOT_FOUND).body("nada");

@@ -53,10 +53,10 @@ public class AnotherTests {
 
   @Test
   public void updateTest() throws Exception {
-    mvc.perform(MockMvcRequestBuilders.post("/user/update")
-        .content(asJsonString(new UserDTO(UUID.randomUUID().toString(), "mishelon", "a", "b")))
+    mvc.perform(MockMvcRequestBuilders.put("/user/update")
+        .content(asJsonString(new UserDTO("asdasdasdasdasdasdasdsadasdadasadssaaaa@gmail.com",
+            UUID.randomUUID().toString(), "mishelon", "a", "b")))
         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-        .andExpect(status().isAccepted())
-        .andExpect(MockMvcResultMatchers.jsonPath("$.name").exists());
+        .andExpect(status().isOk()).andExpect(MockMvcResultMatchers.jsonPath("$.name").exists());
   }
 }

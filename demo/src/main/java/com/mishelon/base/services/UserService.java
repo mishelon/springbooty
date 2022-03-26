@@ -1,6 +1,7 @@
 package com.mishelon.base.services;
 
 import com.mishelon.base.dto.UserDTO;
+import com.mishelon.base.exceptions.ValidationException;
 
 /**
  * User service interface definition
@@ -16,6 +17,6 @@ public interface UserService {
    */
   UserDTO findById(String id);
 
-  UserDTO update(UserDTO user);
+  UserDTO update(UserDTO user) throws ValidationException;
 
 }
